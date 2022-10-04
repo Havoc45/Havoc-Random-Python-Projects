@@ -1,0 +1,111 @@
+{% extends "switch/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if title %}
+        GMS - {{ title }}
+    {% else %}
+        GMS
+    {% endif %} 
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container-fluid col">
+	
+	<div class="card card-body">
+		<div>
+			<h5 class="title-section" style="float:left;">Report</h5>
+		</div>
+		
+		<hr>
+
+			<div>
+				<table id="table_id" class="table table-striped table-bordered" style="width:100%">
+					{% csrf_token %}
+					<thead>
+						<tr>
+							<th style="display:none;">ID</th>
+							<th style="width: 3%">No</th>
+							<th>Switch</th>
+							<th>Alert Type</th>
+							<th>Alert Date/Time</th>
+							<th>Email Notification Date/Time</th>
+						</tr>
+					</thead>
+					<tbody>
+            
+						{% for switch in data %}
+							<tr>
+								<td style="display:none;">{{switch.id}}</td>
+								<td>{{ forloop.counter }}</td>
+								<td>SW-{{switch.switch}}</td>
+								<td>Ping Lost</td>
+								<td>{{switch.timestamp}}</td>
+								<td>{{switch.email_timestamp}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+
+	</div>
+	
+</div>
+  
+{% endblock %}
+
+{% block datatable_js %}
+
+{{ form.media }}
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+  $(document).ready( function () {
+
+    var table = $('#table_id').DataTable({
+		    
+        "ordering": true,
+          "order": [[ 1, "asc" ]],
+  
+        columns: 
+        [
+          { "data": "ID" },
+          { "data": "No" },
+          { "data": "switch" },
+          { "data": "alertType" },
+          { "data": "alertDT" },
+          { "data": "emailNotificationDT" },
+          
+        ],
+        
+        columnDefs: [{ 
+          orderable: false, 
+          targets: "no-sort"
+        },
+        {
+          targets: [ 0 ],
+          visible: false,
+          searchable: false
+        }],
+  
+        dom:'<<"row mt-2"<"col-sm"B><"col-sm"f>> <rt> <"row mt-1"<"col-sm pt-2"l><"col-2"i><"col-sm pt-2"p>> >',
+  
+        select: { 
+          style: 'single'
+        },
+  
+        buttons:[],
+  
+      });
+  
+
+  })
+</script>
+
+{% endblock %}
+  

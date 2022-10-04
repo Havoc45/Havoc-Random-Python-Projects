@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+      {% block title_outer %}
+          <title>{% block title %}{% endblock %}</title>
+      {% endblock %}
+
+      {% block meta %}
+          <meta charset="utf-8">
+          <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+          <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+          <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+      {% endblock %}
+
+      {% block stylesheets %}
+          {% include 'switch/lib/_styles.html' %}
+      {% endblock %}
+
+      {% block extra_head %}{% endblock %}
+  </head>
+  <body class="hold-transition sidebar-mini {% block body_class %}{% block bodyclass %}{% endblock %}{% endblock %}">
+
+  {% block javascript %}
+      {% include 'switch/lib/_scripts.html' %}
+  {% endblock %}
+
+  {% block body %}
+        <div class="container">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <span class="fs-4">Nosairis</span>
+            </a>
+
+            <ul class="nav nav-pills">
+                <li id="home-nav" class="nav-item"><a href="{% url 'home'  %}" class="nav-link" aria-current="page">Dashboard</a></li>
+                <li id="report-nav" class="nav-item"><a href="{% url 'report'  %}"  class="nav-link">Report</a></li>
+                <li id="sample-nav" class="nav-item"><a href="{% url 'import_data'  %}" class="nav-link">Import Sample Data</a></li>
+            </ul>
+            </header>
+        </div>
+        <div class="wrapper">
+            {% block content_wrapper %}
+            <div class="content-wrapper">
+                {% block content_header %}
+                    <section class="content-header">
+                        {% block content_block_wrap %}
+                            <div id="overlay-div" class="overlay">
+                                <div id="spinner-div" class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+
+                                <div id="content-div">
+                                    {% block content %}{% endblock %}
+                                </div>
+                            </div>
+                        {% endblock %}
+                    </section>
+                {% endblock %}
+
+                {% block content_outer %}
+                {% endblock %}
+
+            </div>
+            {% endblock content_wrapper %}
+            
+            {% block nav_footer %}
+            {% endblock %}
+
+        </div>
+  {% endblock body %}
+
+  <script>
+    $(document).ready( function () {
+        $('#overlay-div').removeClass('overlay');
+        $('#spinner-div').hide();
+        $('#sample-nav').on('click', function(){
+            $('#overlay-div').addClass('overlay');
+            $('#content-div').hide();
+            $('#spinner-div').show();
+            $('.nav-item').attr("disabled", "disabled");
+        })
+
+    })
+  </script>
+
+  {% block extra_js %}{% endblock %}
+  {% block datatable_js%}{%endblock%}
+
+  {% block extra_foot %}{% endblock %}
+
+  </body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "switch/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if title %}
+        Nosairis - {{ title }}
+    {% else %}
+        GMS
+    {% endif %} 
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container-fluid col">
+	
+	<div class="card card-body">
+		<div>
+			<h5 class="title-section" style="float:left;">Dashboard</h5>
+		</div>
+		
+		<hr>
+
+    {% if data is not None %}
+      
+      {% if response is not None %}
+        <div class="alert alert-success" role="alert">
+          <div class="container text-center">
+            <span>{{response}}</span>
+          </div> 
+        </div>
+      {% endif %}
+
+      <div class="container text-center">
+        <div class="row">
+          
+          {% for switch in data %}
+            <div class="col">
+              <a class="btn btn-primary btn-lg" href="{% url 'view_switch' switch %}" role="button">Switch - {{switch}} </a>
+            </div>
+          {% endfor %}
+            
+        </div> 
+      </div>
+    {% else %}
+
+    <div class="alert alert-primary" role="alert">
+      <div class="container text-center">
+        <span>There is no switch data in the database!</span>
+      </div> 
+    </div>
+      
+    {% endif %}
+	</div>
+	
+</div>
+  
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+  $(document).ready( function () {
+
+
+  })
+</script>
+
+{% endblock %}
+  

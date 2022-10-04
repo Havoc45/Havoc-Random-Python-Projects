@@ -1,0 +1,46 @@
+changelog:
+v1.1 - added full url taken from href to column url instead of base url taken from div class r
+	> this version includes 2 new methods
+	i) find_fullurl
+	ii) suffix_handler(util.py)
+
+External Dependencies:
+1)	there is a variable called CHROME_PATH which has to lead to your
+	google chrome.exe
+
+2)	In the 'browser' variable, make sure the first argument is a path
+	pointing to chromedriver.exe 
+	(I have added the driver in the zipfile which you can also download)
+
+3)	You may comment out the options argument in the
+	'browser' variable to run your browser in the foreground thus
+	you may ignore step 1)
+
+4)	I have left a break condition n > 10: at the bottom to stop the script after
+	it populates at least 10 rows. Comment out or remove.
+
+Python Dependencies:
+1)	Selenium should be the only external library used.
+2)	Python 3.8.3 will definitely vary from python 2.7 (no f-string support)
+
+Usage guide:
+1)	the method find_fullurl & suffix_handler discriminates against base urls that contain the word google in them. 
+	This is to avoid other google links on the page unrelated to the search results
+2)	if you specify the word none as a value for the dork option (-d), 
+	you can omit dork format dork:keyword and just pass keyword. 
+	[this is to allow usage of google operators that don't have colon pairs] 
+
+Other locks:
+1)	I have left a break condition n > 100: at the bottom to stop the script after
+	it populates at least 100 rows. Comment out or remove.
+2)	uncomment the second last line input('done...') if you want to see 
+	the browser status at the end of the run. 
+	Do not try to remove browser.close(). not sure what may happen if you
+	leave Chrome in the background after execution.
+
+Notes:
+1)	you may adjust the timeout argument in util.py (default = 10 seconds)
+2)	you may change the delimiter from the 'delimiter' variable  (default = '^')
+3)	you may pass -f filename to specify the 'filename' (default = 'output.csv')
+4)	this script is built to only run Chrome in the background. Selenium does
+	however support other browsers.

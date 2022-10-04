@@ -1,0 +1,136 @@
+{% extends "switch/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if title %}
+        Nosairis - {{ title }}
+    {% else %}
+        GMS
+    {% endif %} 
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container-fluid col">
+	
+	<div class="my-2">
+    <a class="btn btn-primary" href="{% url 'home' %}" role="button">Back to Home</a> 
+  </div>
+  
+  <div class="card card-body">
+		<div>
+			<h5 class="title-section" style="float:left;">View Switch - {{switch}}</h5>
+		</div>
+		
+		<hr>
+
+    {% if data is not None %}
+      
+      {% if response is not None %}
+        <div class="alert alert-success" role="alert">
+          <div class="container text-center">
+            <span>{{response}}</span>
+          </div> 
+        </div>
+      {% endif %}
+
+      <div class="container text-center" style="width: 100%; overflow-x: auto; overflow-y: hidden">
+        <div>
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+    {% else %}
+
+    <div class="alert alert-primary" role="alert">
+      <div class="container text-center">
+        <span>There is no switch data in the database!</span>
+      </div> 
+    </div>
+      
+    {% endif %}
+	</div>
+	
+</div>
+  
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+  $(document).ready( function () {
+    const chart = $('#myChart');
+    
+    const label = [
+      {% for d in label %}
+        new Date({{d}} * 1000).toJSON(),
+      {% endfor %}
+    ]
+
+    const pingData = [
+      {% for d in data %}
+        {
+          x: new Date({{d.timestamp}} * 1000).toJSON(),
+          y: {{d.status}},
+        },
+      {% endfor %}
+    ]
+
+    const data = {
+      labels: label,
+      datasets: [{
+        label: 'SW - {{switch}}',
+        backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+        borderColor: ['rgba(255, 99, 132, 0.5)'],
+        fill: false,
+        data: pingData,
+      }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              text: 'SW - {{switch}} Ping Availability',
+              display: true
+            }
+          },
+          scales: {
+            x: {
+              type: 'time',
+              time: {
+                // Luxon format string
+                tooltipFormat: 'dd/MM/yyyy HH:mm:ss zzz'
+              },ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 60
+              },
+              title: {
+                display: true,
+                text: 'Date'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Ping Status'
+              },
+              min: 0,
+              max: 1,
+              ticks: {
+                stepSize: 1
+              },
+            }
+          },
+        },
+      };
+
+    const myChart = new Chart(chart, config)
+  })
+</script>
+
+{% endblock %}
+  
