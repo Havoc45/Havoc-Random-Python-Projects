@@ -1,0 +1,72 @@
+{% extends "todo/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if title %}
+        {{ title }}
+    {% else %}
+        Django
+    {% endif %} 
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container-fluid col">
+	
+	<div class="card card-body">
+		<div>
+			<h5 class="title-section" style="float:left;">To Do App</h5>
+      <a href="{% url 'add' %}" style="float:right;" class="btn btn-success">Add To-Do</a>
+		</div>
+		
+		<hr>
+
+    {% if data is not None %}
+      
+      {% if response is not None %}
+        <div class="alert alert-success" role="alert">
+          <div class="container text-center">
+            <span>{{response}}</span>
+          </div> 
+        </div>
+      {% endif %}
+
+      
+      {% for obj in data %}
+
+      <div class="card text-center mb-3">
+        <div class="card-header">
+          {{obj.title}}
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{obj.description}}</p>
+          <a href="{% url 'view' obj.id %}" class="btn btn-primary">View</a>
+        </div>
+        <div class="card-footer text-muted">
+          {{obj.created_at}}
+        </div>
+      </div>
+        
+      {% endfor %}
+        
+
+    {% endif %}  
+    
+	</div>
+	
+</div>
+  
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+  $(document).ready( function () {
+
+
+  })
+</script>
+
+{% endblock %}
+  

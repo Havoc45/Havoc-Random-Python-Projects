@@ -1,0 +1,59 @@
+{% extends "todo/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% if title %}
+        {{ title }}
+    {% else %}
+        Django
+    {% endif %} 
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container-fluid col">
+	
+	<div class="card card-body">
+		<div>
+			<h5 class="title-section" style="float:left;">{{title}}</h5>
+      <a href="{% url 'home' %}" style="float:right;" class="btn btn-info">Back</a>
+		</div>
+		
+		<hr>
+
+    <div>
+      <form method="post">
+        {% csrf_token %}
+        
+          {{form|crispy}}
+        
+          <div class="form-group">
+            <div class=""><input type="submit" name="submit" value="Submit" class="btn btn-primary" style="float:left;" id="submit-id-submit" /></div>
+
+            
+            {% if edit is not None %}
+              <a href="{% url 'delete' id %}" style="float:right;" class="btn btn-danger">Delete</a>
+            {% endif %}
+          </div>
+      </form>
+    </div>
+
+	</div>
+	
+</div>
+  
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+  $(document).ready( function () {
+
+
+  })
+</script>
+
+{% endblock %}
+  
